@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  intl:
+  google_fonts:
+  flutter_custom_clippers:
   flutter:
     sdk: flutter
 

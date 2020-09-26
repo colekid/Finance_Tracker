@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,15 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Financial App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.red,
       ),
       home: MyHomePage(title: 'Home'),
@@ -30,15 +23,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -46,68 +30,192 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  TextStyle namestyle = GoogleFonts.montserrat(
+      fontWeight: FontWeight.w700, color: Colors.grey, fontSize: 18);
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  TextStyle amountstyle = GoogleFonts.montserrat(
+      fontWeight: FontWeight.w700, color: Colors.black, fontSize: 20);
+
+  Widget buildTransactionCard(String date, String totalAmount, Widget transact1,
+      Widget transact2, Widget transact3) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 19.0),
+      height: 220,
+      decoration: BoxDecoration(color: Colors.white),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(top: 5.0, left: 5.0),
+                child: Text(
+                  date,
+                  style: namestyle,
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.only(top: 5.0, right: 5.0),
+                child: Text(
+                  totalAmount,
+                  style: namestyle,
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          transact1,
+          transact2,
+          transact3
+        ],
+      ),
+    );
+  }
+
+  Widget buildAmount(
+      Color bg_color, String name, String amount, IconData icon) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: bg_color,
+        child: Center(
+          child: Icon(icon),
+        ),
+      ),
+      title: Text(
+        name,
+        style: amountstyle,
+      ),
+      trailing: Text(
+        amount,
+        style: amountstyle,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      backgroundColor: Color(0xFFF5F5F6),
+      body: Stack(
+        children: <Widget>[
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 200,
+              decoration: BoxDecoration(color: Color(0xFF605BDD)),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+          ),
+          ListView(
+            padding: EdgeInsets.all(8.0),
+            children: <Widget>[
+              SizedBox(
+                height: 40.0,
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  "OVERVIEW",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 25,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  "Here is a list of your transactions",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 18,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                padding: EdgeInsets.all(13.0),
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 19.0),
+                height: 140,
+                decoration: BoxDecoration(color: Colors.white),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Icon(Icons.arrow_back_ios),
+                        Text(
+                          "September 2020",
+                          style: GoogleFonts.montserrat(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
+                        Icon(Icons.arrow_forward_ios)
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text(
+                          "Income",
+                          style: namestyle,
+                        ),
+                        Text(
+                          "Expenses",
+                          style: namestyle,
+                        ),
+                        Text(
+                          "Balance",
+                          style: namestyle,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Text("\$5,000", style: amountstyle),
+                        Text("\$2,000", style: amountstyle),
+                        Text("\$3,000", style: amountstyle),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              buildTransactionCard(
+                  "Saturday 26 Sept",
+                  "\$2000",
+                  buildAmount(Colors.blue, "Food", "-50", Icons.restaurant),
+                  buildAmount(
+                      Colors.yellow, "Clothes", "-200", Icons.blur_circular),
+                  buildAmount(Colors.red, "Rent", "-1750", Icons.house)),
+              SizedBox(
+                height: 10.0,
+              ),
+              buildTransactionCard(
+                  "Friday 25 Sept",
+                  "\$200",
+                  buildAmount(Colors.blue, "Food", "-80", Icons.restaurant),
+                  buildAmount(
+                      Colors.yellow, "Clothes", "-100", Icons.blur_circular),
+                  buildAmount(Colors.green, "Phone", "-20", Icons.phone))
+            ],
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
